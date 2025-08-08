@@ -1,0 +1,17 @@
+import { type LucideIcon, DollarSign, Calendar, User, Sparkles } from "lucide-react";
+import type { UserType } from "./features/admin/schemas";
+import type { Client } from "./features/clients/schemas";
+import type { Service } from "./features/services/schemas";
+
+export const initialClientsData: Client[] = [ { id: 1, name: "Carlos Silva", email: "carlos.silva@example.com", phone: "(11) 98765-4321" }, { id: 2, name: "Bruno Alves", email: "bruno.alves@example.com", phone: "(21) 91234-5678" }, { id: 3, name: "Rafael Lima", email: "rafael.lima@example.com", phone: "(31) 95555-8888" }, { id: 4, name: "Tiago Mendes", email: "tiago.mendes@example.com", phone: "(41) 94444-7777" }, { id: 5, name: "Lucas Ferreira", email: "lucas.ferreira@example.com", phone: "(51) 93333-6666" }, ];
+export const initialServicesData: Service[] = [ { id: 1, name: "Corte de Cabelo", price: "40.00", duration: "30 min" }, { id: 2, name: "Barba Terapia", price: "35.00", duration: "30 min" }, { id: 3, name: "Corte & Barba", price: "70.00", duration: "1h" }, { id: 4, name: "Platinado", price: "150.00", duration: "2h" }, { id: 5, name: "Hidratação", price: "50.00", duration: "45 min" }, ];
+export const initialUsersData: UserType[] = [
+    { id: 1, name: "Admin Geral", email: "admin@barber.com", role: "Admin" },
+    { id: 2, name: "João Barbeiro", email: "joao@barber.com", role: "Funcionário" },
+    { id: 3, name: "Maria Cliente", email: "maria@cliente.com", role: "Cliente" },
+];
+export const metricCardsData: {title: string; amount: string; note: string; Icon: LucideIcon}[] = [ { title: "Faturamento do Mês", amount: "R$ 12.750,00", note: "+15.2% em relação ao mês passado", Icon: DollarSign }, { title: "Agendamentos do Mês", amount: "+182", note: "42 agendamentos esta semana", Icon: Calendar }, { title: "Novos Clientes", amount: "+23", note: "+5 na última semana", Icon: User }, { title: "Serviço Popular", amount: "Corte & Barba", note: "O mais escolhido pelos clientes", Icon: Sparkles }, ];
+export const chartData = [ { name: 'Jan', total: 4100 }, { name: 'Fev', total: 4600 }, { name: 'Mar', total: 5100 }, { name: 'Abr', total: 4900 }, { name: 'Mai', total: 6300 }, { name: 'Jun', total: 7200 }, { name: 'Jul', total: 6900 }, { name: 'Ago', total: 7600 }, { name: 'Set', total: 7400 }, { name: 'Out', total: 8100 }, { name: 'Nov', total: 9600 }, { name: 'Dez', total: 11100 }, ];
+export const upcomingAppointmentsData = [ { name: "Carlos Silva", service: "Corte Degradê", time: "14:00", avatar: "CS" }, { name: "Bruno Alves", service: "Barba Terapia", time: "15:00", avatar: "BA" }, { name: "Rafael Lima", service: "Corte & Barba", time: "16:00", avatar: "RL" }, { name: "Tiago Mendes", service: "Corte Simples", time: "17:00", avatar: "TM" }, { name: "Lucas Ferreira", service: "Platinado", time: "18:00", avatar: "LF" }, ];
+export const financialTransactionsData = [ { id: 1, description: "Pagamento de Carlos Silva", amount: "+ R$ 70,00", date: "04/08/2025", type: "credit" }, { id: 2, description: "Compra de Pomada Modeladora", amount: "- R$ 120,00", date: "03/08/2025", type: "debit" }, { id: 3, description: "Pagamento de Bruno Alves", amount: "+ R$ 35,00", date: "03/08/2025", type: "credit" }, { id: 4, description: "Aluguel do Mês", amount: "- R$ 1.500,00", date: "01/08/2025", type: "debit" }, { id: 5, description: "Pagamento de Rafael Lima", amount: "+ R$ 70,00", date: "01/08/2025", type: "credit" }, ];
+

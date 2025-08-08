@@ -1,0 +1,36 @@
+{
+  "clients": [
+    { "id": 1, "name": "Carlos Silva", "email": "carlos.silva@example.com", "phone": "(11) 98765-4321" },
+    { "id": 2, "name": "Bruno Alves", "email": "bruno.alves@example.com", "phone": "(21) 91234-5678" },
+    { "id": 3, "name": "Rafael Lima", "email": "rafael.lima@example.com", "phone": "(31) 95555-8888" }
+  ],
+  "services": [
+    { "id": 1, "name": "Corte de Cabelo", "price": "40.00", "duration": "30 min" },
+    { "id": 2, "name": "Barba Terapia", "price": "35.00", "duration": "30 min" },
+    { "id": 3, "name": "Corte & Barba", "price": "70.00", "duration": "1h" }
+  ],
+  "users": [
+    { "id": 1, "name": "Admin Geral", "email": "admin@barber.com", "role": "Admin" },
+    { "id": 2, "name": "João Barbeiro", "email": "joao@barber.com", "role": "Funcionário" },
+    { "id": 3, "name": "Maria Cliente", "email": "maria@cliente.com", "role": "Cliente" }
+  ],
+  "appointments": [],
+  "metricCards": [
+    { "title": "Faturamento do Mês", "amount": "R$ 12.750,00", "note": "+15.2% em relação ao mês passado", "Icon": "DollarSign" },
+    { "title": "Agendamentos do Mês", "amount": "+182", "note": "42 agendamentos esta semana", "Icon": "Calendar" },
+    { "title": "Novos Clientes", "amount": "+23", "note": "+5 na última semana", "Icon": "User" },
+    { "title": "Serviço Popular", "amount": "Corte & Barba", "note": "O mais escolhido pelos clientes", "Icon": "Sparkles" }
+  ],
+  "chartData": [
+    { "name": "Jan", "total": 4100 }, { "name": "Fev", "total": 4600 }, { "name": "Mar", "total": 5100 },
+    { "name": "Abr", "total": 4900 }, { "name": "Mai", "total": 6300 }, { "name": "Jun", "total": 7200 }
+  ],
+  "upcomingAppointments": [
+    { "name": "Carlos Silva", "service": "Corte Degradê", "time": "14:00", "avatar": "CS" },
+    { "name": "Bruno Alves", "service": "Barba Terapia", "time": "15:00", "avatar": "BA" }
+  ],
+  "financialTransactions": [
+    { "id": 1, "description": "Pagamento de Carlos Silva", "amount": "+ R$ 70,00", "date": "04/08/2025", "type": "credit" },
+    { "id": 2, "description": "Compra de Pomada Modeladora", "amount": "- R$ 120,00", "date": "03/08/2025", "type": "debit" }
+  ]
+}
