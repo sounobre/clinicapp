@@ -26,7 +26,7 @@ export function AdminView({users, onEdit, onDelete, setActiveView, setCurrentVie
                 </CardContent>
             </Card>
             <Card>
-                <CardHeader className="border-b border-border/50">
+                <CardHeader className="border-b border-border">
                     <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div><CardTitle>Gerenciamento de Usuários</CardTitle> <CardDescription>Adicione, edite ou remova
                             usuários do sistema.</CardDescription></div>

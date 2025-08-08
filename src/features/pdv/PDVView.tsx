@@ -45,7 +45,7 @@ export function PDVView({ services, onSaleComplete, cart, setCart }: PDVViewProp
                     <CardContent className="flex-1 space-y-4 overflow-y-auto">
                         {cart.length === 0 ? ( <p className="text-muted-foreground text-center py-10">Carrinho vazio.</p> ) : ( cart.map(item => ( <div key={item.id} className="flex items-center justify-between"> <div> <p className="font-medium">{item.name}</p> <p className="text-sm text-muted-foreground">R$ {item.price}</p> </div> <div className="flex items-center gap-2"> <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateQuantity(item.id, -1)}><MinusCircle className="h-4 w-4" /></Button> <span>{item.quantity}</span> <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleUpdateQuantity(item.id, 1)}><PlusCircle className="h-4 w-4" /></Button> </div> </div> )) )}
                     </CardContent>
-                    <CardFooter className="flex-col items-stretch space-y-4 border-t border-border/50 pt-6">
+                    <CardFooter className="flex-col items-stretch space-y-4 border-t border-border pt-6">
                         <div className="flex justify-between font-semibold"> <span>Subtotal</span> <span>R$ {total.toFixed(2)}</span> </div>
                         <div className="space-y-2"> <Label>Forma de Pagamento</Label> <Select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}> <option className="bg-card text-foreground">Dinheiro</option> <option className="bg-card text-foreground">Cartão de Crédito</option> <option className="bg-card text-foreground">PIX</option> </Select> </div>
                         <Button onClick={handleFinalizeSale} disabled={cart.length === 0}>Finalizar Venda</Button>

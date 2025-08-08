@@ -184,7 +184,7 @@ export default function App() {
   const themeStyles = `
     .theme-barbershop {
         --background: 220 13% 18%; --foreground: 210 40% 98%;
-        --sidebar: 220 14% 10%; --card: 220 13% 22%;
+        --sidebar: 220 13% 18%; --card: 220 13% 22%;
         --card-foreground: 210 40% 98%; --popover: 220 14% 10%;
         --popover-foreground: 210 40% 98%; --primary: 38 92% 50%;
         --primary-foreground: 220 14% 10%; --secondary: 217 33% 17%;

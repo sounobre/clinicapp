@@ -9,7 +9,7 @@ interface ServiceListProps { services: Service[]; onEdit: (service: Service) => 
 export function ServiceList({ services, onEdit, onDelete, setActiveView }: ServiceListProps) {
     return ( 
     <Card> 
-        <CardHeader className="border-b border-border/50"> 
+        <CardHeader className="border-b border-border"> 
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between"> 
                 <div> <CardTitle>Lista de Serviços</CardTitle> <CardDescription>Gerencie os serviços oferecidos.</CardDescription> </div> 
                 <Button onClick={() => setActiveView('serviceForm')}> <PlusCircle className="mr-2 h-4 w-4" /> Novo Serviço </Button> 

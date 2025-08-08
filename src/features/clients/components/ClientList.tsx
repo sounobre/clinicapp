@@ -9,7 +9,7 @@ interface ClientListProps { clients: Client[]; onEdit: (client: Client) => void;
 export function ClientList({ clients, onEdit, onDelete, setActiveView }: ClientListProps) {
     return ( 
     <Card> 
-        <CardHeader className="border-b border-border/50"> 
+        <CardHeader className="border-b border-border"> 
             <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between"> 
                 <div> 
                     <CardTitle>Lista de Clientes</CardTitle> 

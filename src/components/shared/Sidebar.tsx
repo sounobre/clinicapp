@@ -30,8 +30,8 @@ export function Sidebar({ isSidebarOpen, setIsSidebarOpen, activeView, setActive
   };
 
   return (
-    <aside className={cn( "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border/50 bg-sidebar transition-transform duration-300", isSidebarOpen ? "w-64 translate-x-0" : "w-64 -translate-x-full sm:w-20 sm:translate-x-0" )}>
-      <div className="flex h-16 shrink-0 items-center justify-between border-b border-border/50 px-4 sm:justify-center">
+    <aside className={cn( "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border bg-sidebar transition-transform duration-300", isSidebarOpen ? "w-64 translate-x-0" : "w-64 -translate-x-full sm:w-20 sm:translate-x-0" )}>
+      <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4 sm:justify-center">
         <a href="#" className="flex items-center gap-2 font-semibold text-primary-foreground sm:hidden" onClick={() => handleNavClick('dashboard')}>
             <Scissors className="h-7 w-7 text-primary" /> <span className="text-lg">Barber</span>
         </a>

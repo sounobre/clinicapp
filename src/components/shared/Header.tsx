@@ -32,7 +32,7 @@ export function Header({ setIsSidebarOpen, setActiveView, currentUserRole, curre
             <Button variant="secondary" size="sm" className="ml-auto h-7" onClick={() => setCurrentViewRole('Admin')}>Voltar à Visão de Admin</Button>
         </div>
     )}
-    <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-border/50 bg-background/95 backdrop-blur-sm px-4 md:px-6">
+    <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-border bg-background/95 backdrop-blur-sm px-4 md:px-6">
         <Button variant="ghost" size="icon" className="sm:hidden" onClick={() => setIsSidebarOpen(true)}> <Menu className="h-5 w-5" /> <span className="sr-only">Abrir Menu</span> </Button>
       <div className="relative ml-auto flex-1 md:grow-0">
         <Search className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground" />

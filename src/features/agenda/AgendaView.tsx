@@ -1,15 +1,16 @@
-import { Button } from "@/components/ui/button";
+import React, { type Dispatch, type SetStateAction } from "react";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ChevronLeft, Calendar, ChevronRight } from "lucide-react";
-import type { Dispatch, SetStateAction } from "react";
+} from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
 import type { Appointment } from "../admin/schemas";
+
 
 interface AgendaViewProps {
   appointments: Appointment[];
@@ -38,7 +39,7 @@ export function AgendaView({
     "17:00",
     "18:00",
   ];
-  const weekDays = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const weekDays = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb","Dom"];
 
   const getWeekDays = (date: Date) => {
     const startOfWeek = new Date(date);
@@ -66,7 +67,8 @@ export function AgendaView({
   };
 
   return (
-    <Card>
+    // 1. O Card se torna um container flex que ocupa toda a altura disponível
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
@@ -105,42 +107,38 @@ export function AgendaView({
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-0 overflow-hidden">
-        {/* Cabeçalho da semana */}
-        <div className="grid grid-cols-[minmax(60px,auto)_repeat(6,1fr)] border-t border-border/30">
-          <div className="py-1 text-center border-b sm:border-b-0 sm:border-r border-border/30 text-muted-foreground">
+      {/* 2. O conteúdo do Card cresce para preencher o espaço e controla o scroll */}
+      <CardContent className="p-0 flex-1 overflow-hidden">
+        <div className="grid grid-cols-[minmax(60px,auto)_repeat(6,1fr)] border-t border-border">
+          <div className="p-2 text-center border-b sm:border-b-0 sm:border-r border-border text-muted-foreground">
             Horas
           </div>
           {week.map((day, index) => (
             <div
               key={day.toISOString()}
-              className="py-1 text-center border-b sm:border-b-0 sm:border-r border-border/30 last:border-r-0"
+              className="p-2 text-center border-b sm:border-b-0 sm:border-r border-border last:border-r-0"
             >
               <p className="font-semibold text-sm">{weekDays[index]}</p>
               <p className="text-xs text-muted-foreground">{day.getDate()}</p>
             </div>
           ))}
         </div>
-
-        {/* Linhas e colunas */}
-        <div className="grid grid-cols-[minmax(60px,auto)_repeat(6,1fr)] overflow-y-auto">
-          {/* Coluna das horas */}
-          <div className="border-r border-border/30">
+        {/* 3. A grade interna agora ocupa 100% da altura do seu pai (CardContent) e rola internamente */}
+        <div className="grid grid-cols-[minmax(60px,auto)_repeat(6,1fr)] h-full overflow-y-auto">
+          <div className="border-r border-border">
             {hours.map((hour) => (
               <div
                 key={hour}
-                className="h-12 border-b border-border/30 flex items-center justify-center text-sm text-muted-foreground"
+                className="h-16 border-b border-border p-2 flex items-center justify-center text-sm text-muted-foreground"
               >
                 {hour}
               </div>
             ))}
           </div>
-
-          {/* Colunas dos dias */}
           {week.map((day) => (
             <div
               key={day.toISOString()}
-              className="border-r border-border/30 last:border-r-0"
+              className="border-r border-border last:border-r-0"
             >
               {hours.map((hour) => {
                 const appointment = appointments.find(
@@ -151,7 +149,7 @@ export function AgendaView({
                 return (
                   <div
                     key={`${day.toISOString()}-${hour}`}
-                    className="h-12 border-b border-border/30 p-1"
+                    className="h-16 border-b border-border p-1"
                   >
                     {appointment ? (
                       <button
@@ -183,3 +181,4 @@ export function AgendaView({
     </Card>
   );
 }
+
