@@ -138,7 +138,7 @@ export function AgendaPage({ currentUser }: AgendaPageProps) {
               </button>
             ))}
           </div>
-          <Button onClick={() => { setSelectedSession(null); setDateClickData(null); setIsModalOpen(true); }}>
+          <Button className="primary" onClick={() => { setSelectedSession(null); setDateClickData(null); setIsModalOpen(true); }}>
             <Plus className="mr-2 h-4 w-4" /> Novo Agendamento
           </Button>
         </div>
@@ -160,7 +160,7 @@ export function AgendaPage({ currentUser }: AgendaPageProps) {
         onDateClickData={dateClickData}
       />
 
-      <Dialog open={isDetailModalOpen} onClose={() => setIsDetailModalOpen(false)}>
+      <Dialog open={isDetailModalOpen} onClose={() => setIsDetailModalOpen(false)} size='2xl'>
         {selectedSession && (
           <>
             <CardHeader>
