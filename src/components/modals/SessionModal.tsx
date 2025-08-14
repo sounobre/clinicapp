@@ -132,7 +132,7 @@ export function SessionModal({
             </div>
             {/* --- Aba de Detalhes da Sessão --- */}
             <TabsContent value="details">
-              <div className="p-6 space-y-4">
+              <div className="p-6 space-y-4 min-h-[450px]">
                 <div>
                   <Label htmlFor="pacienteId">Paciente</Label>
                   <select
@@ -263,7 +263,7 @@ export function SessionModal({
 
             {/* --- Aba Financeira --- */}
             <TabsContent value="financial">
-              <div className="p-6 space-y-4">
+              <div className="p-6 space-y-4 min-h-[450px]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="valor_sessao">Valor (R$)</Label>
@@ -332,7 +332,7 @@ export function SessionModal({
             {/* --- Aba de Evolução (condicional) --- */}
             {canSeeEvolution && (
               <TabsContent value="evolution">
-                <div className="p-6 space-y-4">
+                <div className="p-6 space-y-4 min-h-[450px]">
                   <div>
                     <Label htmlFor="notas_internas">
                       Evolução da Sessão (Notas Internas)
