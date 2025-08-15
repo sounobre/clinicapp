@@ -1,11 +1,11 @@
 // Caminho: src/services/api.ts
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
   // IMPORTANTE: Substitua pela URL real do seu backend
-  baseURL: 'http://localhost:3333/api', 
+  baseURL: "http://localhost:8080/api",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
