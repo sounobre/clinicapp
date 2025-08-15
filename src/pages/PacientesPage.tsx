@@ -30,7 +30,7 @@ export function PacientesPage() {
     const [editingClient, setEditingClient] = useState<Client | null>(null);
     const [deletingClientId, setDeletingClientId] = useState<number | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
 
     const { register, handleSubmit, formState: { errors }, reset, control, setValue } = useForm<ClientFormData>({
         resolver: zodResolver(clientSchema)
