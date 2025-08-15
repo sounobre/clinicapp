@@ -7,13 +7,10 @@ import { Dialog } from '@/components/ui/dialog';
 import { CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { useCalendar } from '@/hooks/useCalendar';
-
-// Supondo que você crie estes serviços para interagir com a API
-// import { getSessions, saveSession, deleteSession } from '@/services/sessionService';
-// import { getClients } from '@/services/patientService';
-
 import { SessionModal } from '@/components/modals/SessionModal';
 import type { Session, Client, User } from '@/types';
+import { getSessions, createSession, updateSession, deleteSession } from '@/services/sessionService';
+import { getPatients } from '@/services/patientService';
 
 // TODO: Mover as visualizações do calendário para seus próprios arquivos em `src/pages/agenda/components/`
 import { MonthlyView } from './agenda/components/MonthlyView';
@@ -40,25 +37,16 @@ export function AgendaPage({ currentUser }: AgendaPageProps) {
   const [selectedSession, setSelectedSession] = useState<Session | null>(null);
   const [dateClickData, setDateClickData] = useState<{ date: Date; time: string; } | null>(null);
 
-  // Função para buscar dados da API
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // Em uma aplicação real, você faria as chamadas aqui:
-      // const [sessionsData, clientsData] = await Promise.all([
-      //   getSessions(),
-      //   getClients() 
-      // ]);
-      // setSessions(sessionsData);
-      // setClients(clientsData);
-
-      // Por enquanto, usamos dados mocados para simulação
-      const mockSessions: Session[] = [{id: 1, pacienteId: 1, data_sessao: "2025-08-11", hora_inicio: "14:00", duracao_minutos: 50, titulo_sessao: "Consulta Ana P.", notas_agendamento: "Consulta de rotina.", tipo_sessao: "Online", status_sessao: "Realizada", valor_sessao: 150, recorrencia: "Nao se repete"}];
-      const mockClients: Client[] = [{ id: 1, name: 'Ana Pereira', email: 'ana.p@example.com', phone: '(21) 99999-8888', status: 'Ativo', nome_completo: 'Ana Pereira da Silva', cpf: '111.222.333-44', data_nascimento: '1990-05-15', consentimento_lgpd: true }];
-      setSessions(mockSessions);
-      setClients(mockClients);
-
+      const [sessionsData, clientsData] = await Promise.all([
+        getSessions(),
+        getPatients(1, 100, '')
+      ]);
+      setSessions(sessionsData);
+      setClients(clientsData.data);
     } catch (err) {
       setError("Falha ao buscar dados da agenda. Tente novamente.");
       console.error(err);
@@ -73,14 +61,12 @@ export function AgendaPage({ currentUser }: AgendaPageProps) {
 
   const handleSaveSession = async (data: any) => {
     try {
-      // Lógica de API para salvar
-      // if (selectedSession) {
-      //   await updateSession(selectedSession.id, data);
-      // } else {
-      //   await createSession(data);
-      // }
-      alert(`Sessão "${data.titulo_sessao}" salva com sucesso! (Simulação)`);
-      fetchData(); // Re-busca os dados para atualizar a UI
+      if (selectedSession) {
+        await updateSession(selectedSession.id, data);
+      } else {
+        await createSession(data);
+      }
+      fetchData();
     } catch (error) {
       alert("Erro ao salvar a sessão.");
       console.error(error);
@@ -91,9 +77,8 @@ export function AgendaPage({ currentUser }: AgendaPageProps) {
   const handleDeleteConfirm = async () => {
     if (!selectedSession) return;
     try {
-      // await deleteSession(selectedSession.id);
-      alert("Sessão apagada com sucesso! (Simulação)");
-      fetchData(); // Re-busca os dados
+      await deleteSession(selectedSession.id);
+      fetchData();
     } catch (error) {
       alert("Erro ao apagar sessão.");
       console.error(error);
