@@ -70,19 +70,9 @@ export function PacientesPage() {
     const handleSaveClient = async (data: ClientFormData) => {
         try {
             if (editingClient) {
-                await updatePatient(editingClient.id, {
-                    ...data,
-                    name: data.nome_completo,
-                    email: data.email_principal,
-                    phone: data.telefone_principal,
-                });
+                await updatePatient(editingClient.id, data);
             } else {
-                await createPatient({
-                    ...data,
-                    name: data.nome_completo,
-                    email: data.email_principal,
-                    phone: data.telefone_principal,
-                });
+                await createPatient(data);
             }
             closeModal();
             fetchClients();
