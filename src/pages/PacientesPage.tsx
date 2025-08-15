@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { clientSchema } from '@/schemas';
 import type { Client } from '@/types';
+import { getPatients, createPatient, updatePatient, deletePatient } from '@/services/patientService';
 
 type ClientFormData = z.infer<typeof clientSchema>;
 
@@ -41,21 +42,9 @@ export function PacientesPage() {
         setIsLoading(true);
         setError(null);
         try {
-            // Em uma aplicação real, a API retornaria os dados paginados e filtrados
-            // const response = await getPatients(currentPage, ITEMS_PER_PAGE, searchTerm);
-            // setClients(response.data);
-            // setTotalItems(response.total);
-
-            // Simulação para fins de desenvolvimento
-            const mockClients: Client[] = [
-                { id: 1, name: 'Ana Pereira', email: 'ana.p@example.com', phone: '(21) 99999-8888', status: 'Ativo', nome_completo: 'Ana Pereira da Silva', cpf: '111.222.333-44', data_nascimento: '1990-05-15', consentimento_lgpd: true },
-                { id: 2, name: 'João Santos', email: 'joao.s@example.com', phone: '(22) 98888-7777', status: 'Ativo', nome_completo: 'João Santos de Souza', cpf: '222.333.444-55', data_nascimento: '1985-10-20', consentimento_lgpd: true },
-                { id: 3, name: 'Carla Lima', email: 'carla.l@example.com', phone: '(11) 97777-6666', status: 'Ativo', nome_completo: 'Carla Lima Azevedo', cpf: '333.444.555-66', data_nascimento: '1992-02-25', consentimento_lgpd: true },
-            ];
-            const filtered = mockClients.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
-            setClients(filtered);
-            setTotalItems(filtered.length);
-
+            const response = await getPatients(currentPage, ITEMS_PER_PAGE, searchTerm);
+            setClients(response.data);
+            setTotalItems(response.total);
         } catch (err) {
             setError("Falha ao buscar pacientes. Tente novamente mais tarde.");
             console.error(err);
@@ -81,11 +70,19 @@ export function PacientesPage() {
     const handleSaveClient = async (data: ClientFormData) => {
         try {
             if (editingClient) {
-                // await updatePatient(editingClient.id, { ...data, name: data.nome_completo, email: data.email_principal, phone: data.telefone_principal });
-                alert(`Paciente ${data.nome_completo} atualizado! (Simulação)`);
+                await updatePatient(editingClient.id, {
+                    ...data,
+                    name: data.nome_completo,
+                    email: data.email_principal,
+                    phone: data.telefone_principal,
+                });
             } else {
-                // await createPatient({ ...data, name: data.nome_completo, email: data.email_principal, phone: data.telefone_principal });
-                alert(`Paciente ${data.nome_completo} criado! (Simulação)`);
+                await createPatient({
+                    ...data,
+                    name: data.nome_completo,
+                    email: data.email_principal,
+                    phone: data.telefone_principal,
+                });
             }
             closeModal();
             fetchClients();
@@ -98,8 +95,7 @@ export function PacientesPage() {
     const handleDeleteClient = async () => {
         if (!deletingClientId) return;
         try {
-            // await deletePatient(deletingClientId);
-            alert(`Paciente com ID ${deletingClientId} deletado! (Simulação)`);
+            await deletePatient(deletingClientId);
             setDeletingClientId(null);
             fetchClients();
         } catch (err) {

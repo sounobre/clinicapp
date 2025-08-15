@@ -7,7 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import type { Client } from "@/types";
-// import { getClients } from '@/services/patientService';
+import { getPatients } from '@/services/patientService';
 
 interface ProntuariosPageProps {
   onClientSelect: (clientId: number) => void;
@@ -23,24 +23,8 @@ export function ProntuariosPage({ onClientSelect }: ProntuariosPageProps) {
       setIsLoading(true);
       setError(null);
       try {
-        // const clientsData = await getClients(); // Chamada de API real
-        // setClients(clientsData);
-
-        // Simulação com dados mocados
-        const mockClients: Client[] = [
-          {
-            id: 1,
-            name: "Ana Pereira",
-            email: "ana.p@example.com",
-            phone: "(21) 99999-8888",
-            status: "Ativo",
-            nome_completo: "Ana Pereira da Silva",
-            cpf: "111.222.333-44",
-            data_nascimento: "1990-05-15",
-            consentimento_lgpd: true,
-          },
-        ];
-        setClients(mockClients);
+        const response = await getPatients(1, 100, '');
+        setClients(response.data);
       } catch (err) {
         setError("Não foi possível carregar os prontuários. Tente novamente.");
         console.error(err);

@@ -7,9 +7,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Label } from '@/components/ui/label';
 import { SessionModal } from '@/components/modals/SessionModal';
 import type { Session, Client, User } from '@/types';
-
-// import { getPatientById } from '@/services/patientService';
-// import { getSessionsByPatientId, saveSession } from '@/services/sessionService';
+import { getPatientById } from '@/services/patientService';
+import { getSessionsByPatientId, createSession, updateSession } from '@/services/sessionService';
 
 interface PacienteDetalhesPageProps {
   clientId: number;
@@ -30,20 +29,12 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
     setIsLoading(true);
     setError(null);
     try {
-      // Chamadas de API reais
-      // const [clientData, sessionsData] = await Promise.all([
-      //   getPatientById(clientId),
-      //   getSessionsByPatientId(clientId)
-      // ]);
-      // setClient(clientData);
-      // setSessions(sessionsData);
-
-      // Simulação
-      const mockClient: Client = { id: clientId, name: 'Ana Pereira', email: 'ana.p@example.com', phone: '(21) 99999-8888', status: 'Ativo', nome_completo: 'Ana Pereira da Silva', cpf: '111.222.333-44', data_nascimento: '1990-05-15', consentimento_lgpd: true };
-      const mockSessions: Session[] = [{id: 1, pacienteId: clientId, data_sessao: "2025-08-11", hora_inicio: "14:00", duracao_minutos: 50, titulo_sessao: "Consulta Ana P.", notas_agendamento: "Consulta de rotina.", notas_internas: "Paciente apresentou-se calmo e colaborativo.", tipo_sessao: "Online", status_sessao: "Realizada", valor_sessao: 150, recorrencia: "Nao se repete"}];
-      setClient(mockClient);
-      setSessions(mockSessions);
-
+      const [clientData, sessionsData] = await Promise.all([
+        getPatientById(clientId),
+        getSessionsByPatientId(clientId)
+      ]);
+      setClient(clientData);
+      setSessions(sessionsData);
     } catch (err) {
       setError("Não foi possível carregar os dados do paciente.");
       console.error(err);
@@ -60,9 +51,12 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
     // Adiciona o ID do paciente fixo aos dados da sessão antes de salvar
     const sessionPayload = { ...data, pacienteId: clientId };
     try {
-        // await saveSession(sessionPayload); // Lógica de API para salvar
-        alert(`Sessão "${sessionPayload.titulo_sessao}" salva com sucesso! (Simulação)`);
-        fetchData(); // Re-busca os dados para atualizar
+        if (editingItem) {
+            await updateSession(editingItem.id, sessionPayload);
+        } else {
+            await createSession(sessionPayload);
+        }
+        fetchData();
         closeModal();
     } catch(err) {
         alert("Erro ao salvar sessão!");
