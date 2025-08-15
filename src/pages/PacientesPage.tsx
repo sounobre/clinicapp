@@ -125,7 +125,7 @@ export function PacientesPage() {
                         <Search className="w-5 h-5 text-slate-400 absolute top-1/2 left-3 -translate-y-1/2" />
                         <Input type="text" placeholder="Pesquisar paciente..." className="pl-10" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                     </div>
-                    <Button onClick={openModalForNew}><Plus className="mr-2 h-4 w-4" /> Novo Paciente</Button>
+                    <Button variant="primary" onClick={openModalForNew}><Plus className="mr-2 h-4 w-4" /> Novo Paciente</Button>
                 </div>
             </div>
             
@@ -189,47 +189,52 @@ export function PacientesPage() {
                         <Tabs defaultValue="pessoal">
                              <div className="px-6"><TabsList><TabsTrigger value="pessoal">Dados Pessoais</TabsTrigger><TabsTrigger value="contato">Contato</TabsTrigger><TabsTrigger value="adicionais">Informações Adicionais</TabsTrigger></TabsList></div>
                             <TabsContent value="pessoal">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="md:col-span-2"><Label htmlFor="nome_completo">Nome Completo</Label><Input id="nome_completo" {...register("nome_completo")} />{errors.nome_completo && <p className="text-sm text-red-500 mt-1">{errors.nome_completo.message}</p>}</div>
                                     <div><Label htmlFor="cpf">CPF</Label><Input id="cpf" {...register("cpf")} placeholder="000.000.000-00" />{errors.cpf && <p className="text-sm text-red-500 mt-1">{errors.cpf.message}</p>}</div>
                                     <div><Label htmlFor="rg">RG</Label><Input id="rg" {...register("rg")} /></div>
                                     <div><Label htmlFor="data_nascimento">Data de Nascimento</Label><Input id="data_nascimento" type="date" {...register("data_nascimento")} />{errors.data_nascimento && <p className="text-sm text-red-500 mt-1">{errors.data_nascimento.message}</p>}</div>
                                     <div><Label htmlFor="nome_social">Nome Social</Label><Input id="nome_social" {...register("nome_social")} /></div>
+                                    <div><Label htmlFor="genero">Gênero</Label><select {...register("genero")} className="h-10 w-full rounded-md border border-slate-300 bg-transparent px-3 dark:border-slate-700"><option>Prefiro não informar</option><option>Feminino</option><option>Masculino</option><option>Não-binário</option><option>Outro</option></select></div>
+                                    <div><Label htmlFor="pronomes">Pronomes</Label><Input id="pronomes" {...register("pronomes")} /></div>
                                 </div>
                             </TabsContent>
-                            <TabsContent value="contato">
+                            <TabsContent value="contato" className="p-6">
                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div><Label htmlFor="telefone_principal">Telefone Principal</Label><Input id="telefone_principal" {...register("telefone_principal")} placeholder="(00) 90000-0000" />{errors.telefone_principal && <p className="text-sm text-red-500 mt-1">{errors.telefone_principal.message}</p>}</div>
                                     <div><Label htmlFor="email_principal">Email Principal</Label><Input id="email_principal" type="email" {...register("email_principal")} />{errors.email_principal && <p className="text-sm text-red-500 mt-1">{errors.email_principal.message}</p>}</div>
+                                    <div className="md:col-span-2"><hr className="my-4 dark:border-slate-700"/></div>
+                                    <div><Label htmlFor="endereco_cep">CEP</Label><Input id="endereco_cep" {...register("endereco_cep")} placeholder="00000-000" /></div>
+                                    <div><Label htmlFor="endereco_rua">Rua</Label><Input id="endereco_rua" {...register("endereco_rua")} /></div>
+                                    <div><Label htmlFor="endereco_numero">Número</Label><Input id="endereco_numero" {...register("endereco_numero")} /></div>
+                                    <div><Label htmlFor="endereco_complemento">Complemento</Label><Input id="endereco_complemento" {...register("endereco_complemento")} /></div>
+                                    <div><Label htmlFor="endereco_bairro">Bairro</Label><Input id="endereco_bairro" {...register("endereco_bairro")} /></div>
+                                    <div><Label htmlFor="endereco_cidade">Cidade</Label><Input id="endereco_cidade" {...register("endereco_cidade")} /></div>
+                                    <div><Label htmlFor="endereco_estado">Estado</Label><Input id="endereco_estado" {...register("endereco_estado")} /></div>
+                                    <div className="md:col-span-2"><hr className="my-4 dark:border-slate-700"/></div>
+                                    <div className="md:col-span-2"><h4 className="font-medium mb-2 dark:text-slate-200">Contato de Emergência</h4></div>
+                                    <div><Label htmlFor="contato_emergencia_nome">Nome</Label><Input id="contato_emergencia_nome" {...register("contato_emergencia_nome")} /></div>
+                                    <div><Label htmlFor="contato_emergencia_parentesco">Parentesco</Label><Input id="contato_emergencia_parentesco" {...register("contato_emergencia_parentesco")} /></div>
+                                    <div><Label htmlFor="contato_emergencia_telefone">Telefone</Label><Input id="contato_emergencia_telefone" {...register("contato_emergencia_telefone")} /></div>
                                  </div>
                             </TabsContent>
                              <TabsContent value="adicionais">
-                                 <div className="space-y-4">
-                                    <div className="flex items-start space-x-2 pt-4">
-                                        <Controller name="consentimento_lgpd" control={control} render={({ field }) => <input type="checkbox" id="consentimento_lgpd" checked={field.value} onChange={field.onChange} className="h-4 w-4 mt-1" />} />
-                                        <div className="grid gap-1.5 leading-none">
-                                            <label htmlFor="consentimento_lgpd" className="text-sm font-medium">Eu concordo com os <a href="#" className="text-blue-600 dark:text-blue-400">termos de uso</a> e <a href="#" className="text-blue-600 dark:text-blue-400">política de privacidade</a>.</label>
-                                            {errors.consentimento_lgpd && <p className="text-sm text-red-500">{errors.consentimento_lgpd.message}</p>}
-                                        </div>
-                                    </div>
+                                 <div className="p-6 space-y-4">
+                                    <div><Label htmlFor="como_conheceu">Como conheceu a clínica?</Label><select {...register("como_conheceu")} className="h-10 w-full rounded-md border border-slate-300 bg-transparent px-3 dark:border-slate-700"><option>Indicação</option><option>Google</option><option>Instagram</option><option>Site</option><option>Outro</option></select></div>
+                                    <div><Label htmlFor="campo_observacoes_iniciais">Observações Iniciais</Label><textarea {...register("campo_observacoes_iniciais")} className="min-h-[80px] w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 dark:border-slate-700" /></div>
+                                    <div className="flex items-start space-x-2"><Controller name="consentimento_lgpd" control={control} render={({ field }) => <input type="checkbox" id="consentimento_lgpd" checked={field.value} onChange={field.onChange} className="h-4 w-4 mt-1" />} /><div className="grid gap-1.5 leading-none"><label htmlFor="consentimento_lgpd" className="text-sm font-medium">Eu concordo com os <a href="#" className="text-blue-600 dark:text-blue-400">termos de uso</a> e <a href="#" className="text-blue-600 dark:text-blue-400">política de privacidade</a>.</label>{errors.consentimento_lgpd && <p className="text-sm text-red-500">{errors.consentimento_lgpd.message}</p>}</div></div>
                                  </div>
-                             </TabsContent>
+                            </TabsContent>
                         </Tabs>
                     </div>
-                    <div className="flex justify-end p-6 pt-4 space-x-2">
-                        <Button variant="ghost" type="button" onClick={closeModal}>Cancelar</Button>
-                        <Button type="submit">Salvar Paciente</Button>
-                    </div>
+                    <div className="flex justify-end p-6 pt-4 space-x-2"><Button variant="ghost" type="button" onClick={closeModal}>Cancelar</Button>
+                    <Button variant="primary" type="submit">Salvar Paciente</Button></div>
                 </form>
             </Dialog>
-
             <Dialog open={!!deletingClientId} onClose={() => setDeletingClientId(null)}>
                 <CardHeader><CardTitle>Confirmar Exclusão</CardTitle></CardHeader>
-                <CardContent><p>Tem certeza que deseja apagar este paciente? Esta ação não pode ser desfeita e todos os dados relacionados serão perdidos.</p></CardContent>
-                <div className="flex justify-end p-6 pt-0 space-x-2">
-                    <Button variant="ghost" onClick={() => setDeletingClientId(null)}>Cancelar</Button>
-                    <Button variant="destructive" onClick={handleDeleteClient}>Apagar</Button>
-                </div>
+                <CardContent><p>Tem certeza que deseja apagar este paciente? Esta ação não pode ser desfeita.</p></CardContent>
+                <div className="flex justify-end p-6 pt-0 space-x-2"><Button variant="ghost" onClick={() => setDeletingClientId(null)}>Cancelar</Button><Button variant="destructive" onClick={handleDeleteClient}>Apagar</Button></div>
             </Dialog>
         </main>
     );

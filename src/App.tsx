@@ -65,6 +65,7 @@ export default function App() {
       case 'dashboard': return <DashboardPage />;
       case 'agenda': return <AgendaPage currentUser={currentUser} />;
       case 'pacientes': return <PacientesPage />;
+      case 'funcionarios': return <FuncionariosPage employees={employees} setEmployees={setEmployees} />;
       case 'prontuarios': return <ProntuariosPage onClientSelect={handleClientSelectForDetails} />;
       // ... outros cases para as páginas restantes
       default: return <DashboardPage />;

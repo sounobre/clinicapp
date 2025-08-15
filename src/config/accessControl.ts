@@ -1,11 +1,12 @@
 // Caminho: src/config/accessControl.ts
-import { LayoutDashboard, Calendar, Users, BarChart, Settings, StickyNote, CircleDollarSign, Briefcase } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, BarChart, Settings, StickyNote, CircleDollarSign, Briefcase, UserPlus } from "lucide-react";
 import type { Role, Plan } from '@/types';
 
 export const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'agenda', label: 'Agenda', icon: Calendar },
   { id: 'pacientes', label: 'Pacientes', icon: Users },
+  { id: 'funcionarios', label: 'Funcionários', icon: UserPlus },
   { id: 'prontuarios', label: 'Prontuários', icon: StickyNote },
   { id: 'financeiro', label: 'Financeiro', icon: CircleDollarSign },
   { id: 'servicos', label: 'Serviços', icon: Briefcase },
