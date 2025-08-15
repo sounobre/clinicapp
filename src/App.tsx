@@ -13,12 +13,13 @@ import { PacientesPage } from '@/pages/PacientesPage';
 import { ProntuariosPage } from '@/pages/ProntuariosPage';
 import { PacienteDetalhesPage } from '@/pages/PacienteDetalhesPage';
 import { FuncionariosPage } from '@/pages/FuncionariosPage';
+import { DefinicoesPage } from '@/pages/DefinicoesPage';
 // ... outros imports de página
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   // Simula um usuário logado. Isso viria do seu contexto de autenticação.
-  const [currentUser] = useState<User>({ id: 1, name: "Dr. Silva", email: "dr.silva@psicoapp.com", role: 'admin', plan: 'plano3' });
+  const [currentUser, setCurrentUser] = useState<User>({ id: 1, name: "Dr. Silva", email: "dr.silva@psicoapp.com", role: 'admin', plan: 'plano3' });
   const [employees, setEmployees] = useState<any[]>([]);
   
   const visibleMenus = useMemo(() => getVisibleMenus(currentUser.role, currentUser.plan), [currentUser]);
@@ -69,6 +70,7 @@ export default function App() {
       case 'pacientes': return <PacientesPage />;
       case 'funcionarios': return <FuncionariosPage employees={employees} setEmployees={setEmployees} />;
       case 'prontuarios': return <ProntuariosPage onClientSelect={handleClientSelectForDetails} />;
+      case 'definicoes': return <DefinicoesPage currentUser={currentUser} setCurrentUser={setCurrentUser} />;
       // ... outros cases para as páginas restantes
       default: return <DashboardPage />;
     }
