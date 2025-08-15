@@ -2,18 +2,34 @@
 import api from './api';
 import { Client } from '@/types';
 
-// O tipo 'any' aqui é um placeholder. O ideal é que o backend retorne um objeto de paginação
-export const getPatients = async (page: number, limit: number, searchTerm: string): Promise<{ data: Client[], total: number }> => {
+// Busca pacientes no backend e garante um formato consistente de retorno.
+// Alguns backends podem retornar um array diretamente enquanto outros
+// utilizam um objeto com as propriedades `data` e `total`.
+export const getPatients = async (
+  page: number,
+  limit: number,
+  searchTerm: string
+): Promise<{ data: Client[]; total: number }> => {
   const response = await api.get('/patients', {
     params: {
       page,
       limit,
       search: searchTerm,
-    }
+    },
   });
-  // Adapte a resposta conforme o que seu backend retorna.
-  // Exemplo: return { data: response.data.clients, total: response.data.totalCount };
-  return response.data; 
+
+  const respData = response.data;
+
+  // Se a API retorna um array simples de pacientes
+  if (Array.isArray(respData)) {
+    return { data: respData, total: respData.length };
+  }
+
+  // Caso contrário, assume-se que já possui a estrutura { data, total }
+  return {
+    data: respData.data ?? [],
+    total: respData.total ?? respData.data?.length ?? 0,
+  };
 };
 
 export const getPatientById = async (id: number): Promise<Client> => {
