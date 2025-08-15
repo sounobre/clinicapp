@@ -1,5 +1,5 @@
 // Caminho: src/pages/PacientesPage.tsx
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Search, Plus, Edit, Trash2 } from 'lucide-react';
@@ -13,7 +13,6 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { clientSchema } from '@/schemas';
-import { getPatients, createPatient, updatePatient, deletePatient } from '@/services/patientService';
 import type { Client } from '@/types';
 
 type ClientFormData = z.infer<typeof clientSchema>;

@@ -1,11 +1,8 @@
 import { type LucideIcon, DollarSign, Calendar, User, Sparkles } from "lucide-react";
-import type { UserType } from "./features/admin/schemas";
-import type { Client } from "./features/clients/schemas";
-import type { Service } from "./features/services/schemas";
 
-export const initialClientsData: Client[] = [ { id: 1, name: "Carlos Silva", email: "carlos.silva@example.com", phone: "(11) 98765-4321" }, { id: 2, name: "Bruno Alves", email: "bruno.alves@example.com", phone: "(21) 91234-5678" }, { id: 3, name: "Rafael Lima", email: "rafael.lima@example.com", phone: "(31) 95555-8888" }, { id: 4, name: "Tiago Mendes", email: "tiago.mendes@example.com", phone: "(41) 94444-7777" }, { id: 5, name: "Lucas Ferreira", email: "lucas.ferreira@example.com", phone: "(51) 93333-6666" }, ];
-export const initialServicesData: Service[] = [ { id: 1, name: "Corte de Cabelo", price: "40.00", duration: "30 min" }, { id: 2, name: "Barba Terapia", price: "35.00", duration: "30 min" }, { id: 3, name: "Corte & Barba", price: "70.00", duration: "1h" }, { id: 4, name: "Platinado", price: "150.00", duration: "2h" }, { id: 5, name: "Hidratação", price: "50.00", duration: "45 min" }, ];
-export const initialUsersData: UserType[] = [
+export const initialClientsData = [ { id: 1, name: "Carlos Silva", email: "carlos.silva@example.com", phone: "(11) 98765-4321" }, { id: 2, name: "Bruno Alves", email: "bruno.alves@example.com", phone: "(21) 91234-5678" }, { id: 3, name: "Rafael Lima", email: "rafael.lima@example.com", phone: "(31) 95555-8888" }, { id: 4, name: "Tiago Mendes", email: "tiago.mendes@example.com", phone: "(41) 94444-7777" }, { id: 5, name: "Lucas Ferreira", email: "lucas.ferreira@example.com", phone: "(51) 93333-6666" }, ];
+export const initialServicesData = [ { id: 1, name: "Corte de Cabelo", price: "40.00", duration: "30 min" }, { id: 2, name: "Barba Terapia", price: "35.00", duration: "30 min" }, { id: 3, name: "Corte & Barba", price: "70.00", duration: "1h" }, { id: 4, name: "Platinado", price: "150.00", duration: "2h" }, { id: 5, name: "Hidratação", price: "50.00", duration: "45 min" }, ];
+export const initialUsersData = [
     { id: 1, name: "Admin Geral", email: "admin@barber.com", role: "Admin" },
     { id: 2, name: "João Barbeiro", email: "joao@barber.com", role: "Funcionário" },
     { id: 3, name: "Maria Cliente", email: "maria@cliente.com", role: "Cliente" },
