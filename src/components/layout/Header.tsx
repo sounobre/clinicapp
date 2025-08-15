@@ -1,5 +1,5 @@
 // Caminho: src/components/layout/Header.tsx
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Search, Bell, User, LogOut } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';

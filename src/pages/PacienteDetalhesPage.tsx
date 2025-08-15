@@ -1,5 +1,5 @@
 // Caminho: src/pages/PacienteDetalhesPage.tsx
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ArrowLeft, Plus, Edit } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -104,8 +104,8 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
             <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">Histórico de Sessões</h3>
             <Button onClick={openModalForNew}><Plus className="mr-2 h-4 w-4" /> Registrar Nova Sessão</Button>
           </div>
-          <div className="space-y-4">
-            {historyItems.map(item => (
+            <div className="space-y-4">
+              {historyItems.map((item: any) => (
               <Card key={item.id}>
                 <CardHeader>
                   <div className="flex justify-between items-start">

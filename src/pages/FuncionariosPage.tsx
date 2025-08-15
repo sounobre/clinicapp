@@ -3,12 +3,26 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { FuncionarioModal } from "@/components/modals/FuncionarioModal";
 
-export function FuncionariosPage({ employees, setEmployees }) {
+interface Employee {
+    id: number;
+    fullName: string;
+    role: string;
+    accessEmail: string;
+    status: boolean;
+}
+
+interface FuncionariosPageProps {
+    employees: Employee[];
+    setEmployees: React.Dispatch<React.SetStateAction<Employee[]>>;
+}
+
+export function FuncionariosPage({ employees, setEmployees }: FuncionariosPageProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
-    const handleSaveEmployee = (data) => {
-        const newEmployee = { id: Date.now(), ...data };
+
+    const handleSaveEmployee = (data: Omit<Employee, 'id'>) => {
+        const newEmployee: Employee = { id: Date.now(), ...data };
         setEmployees(prev => [...prev, newEmployee]);
     };
 
@@ -32,7 +46,7 @@ export function FuncionariosPage({ employees, setEmployees }) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                                {employees.map(employee => (
+                                {employees.map((employee) => (
                                     <tr key={employee.id} className="hover:bg-slate-50 dark:hover:bg-slate-700/50">
                                         <td className="p-4 font-medium">{employee.fullName}</td>
                                         <td className="p-4 text-slate-600 dark:text-slate-400">{employee.role}</td>

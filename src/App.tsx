@@ -12,12 +12,14 @@ import { AgendaPage } from '@/pages/AgendaPage';
 import { PacientesPage } from '@/pages/PacientesPage';
 import { ProntuariosPage } from '@/pages/ProntuariosPage';
 import { PacienteDetalhesPage } from '@/pages/PacienteDetalhesPage';
+import { FuncionariosPage } from '@/pages/FuncionariosPage';
 // ... outros imports de página
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   // Simula um usuário logado. Isso viria do seu contexto de autenticação.
-  const [currentUser, setCurrentUser] = useState<User>({ id: 1, name: "Dr. Silva", email: "dr.silva@psicoapp.com", role: 'admin', plan: 'plano3' });
+  const [currentUser] = useState<User>({ id: 1, name: "Dr. Silva", email: "dr.silva@psicoapp.com", role: 'admin', plan: 'plano3' });
+  const [employees, setEmployees] = useState<any[]>([]);
   
   const visibleMenus = useMemo(() => getVisibleMenus(currentUser.role, currentUser.plan), [currentUser]);
   const [activeTab, setActiveTab] = useState(visibleMenus[0]?.id || 'dashboard');

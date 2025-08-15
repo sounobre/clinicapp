@@ -11,7 +11,13 @@ import { Button } from "../ui/button";
 import { CardHeader, CardTitle, CardDescription } from "../ui/card";
 import { employeeSchema } from "@/schemas/employeeSchema";
 
-export function FuncionarioModal({ open, onClose, onSave }) {
+interface FuncionarioModalProps {
+  open: boolean;
+  onClose: () => void;
+  onSave: (data: any) => void;
+}
+
+export function FuncionarioModal({ open, onClose, onSave }: FuncionarioModalProps) {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isCepLoading, setIsCepLoading] = useState(false);
   const {
@@ -20,14 +26,13 @@ export function FuncionarioModal({ open, onClose, onSave }) {
     formState: { errors, isValid },
     watch,
     setValue,
-    trigger,
     control,
   } = useForm({
     resolver: zodResolver(employeeSchema),
     mode: "onTouched",
   });
 
-  const selectedRole = watch("role");
+  const selectedRole = watch<string>("role");
   const professionalRoles = ["Médico(a)", "Dentista", "Enfermeiro(a)"];
   const showProfessionalFields = professionalRoles.includes(selectedRole);
 
@@ -60,7 +65,7 @@ export function FuncionarioModal({ open, onClose, onSave }) {
   };
 
   useEffect(() => {
-    const roleProfileMap = {
+    const roleProfileMap: Record<string, string> = {
       "Médico(a)": "Profissional da Saúde",
       Dentista: "Profissional da Saúde",
       "Enfermeiro(a)": "Profissional da Saúde",
@@ -72,7 +77,7 @@ export function FuncionarioModal({ open, onClose, onSave }) {
     }
   }, [selectedRole, setValue]);
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     console.log("Dados do funcionário:", data);
     onSave(data);
     onClose();
@@ -135,18 +140,18 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                   <div className="md:col-span-2">
                     <Label htmlFor="fullName">Nome Completo</Label>
                     <Input id="fullName" {...register("fullName")} />
-                    {errors.fullName && (
+                    {errors.fullName?.message && (
                       <p className="text-sm text-red-500 mt-1">
-                        {errors.fullName.message}
+                        {errors.fullName?.message as string}
                       </p>
                     )}
                   </div>
                   <div>
                     <Label htmlFor="cpf">CPF</Label>
                     <Input id="cpf" {...register("cpf")} />
-                    {errors.cpf && (
+                    {errors.cpf?.message && (
                       <p className="text-sm text-red-500 mt-1">
-                        {errors.cpf.message}
+                        {errors.cpf?.message as string}
                       </p>
                     )}
                   </div>
@@ -161,9 +166,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                       type="date"
                       {...register("birthDate")}
                     />
-                    {errors.birthDate && (
+                    {errors.birthDate?.message && (
                       <p className="text-sm text-red-500 mt-1">
-                        {errors.birthDate.message}
+                        {errors.birthDate?.message as string}
                       </p>
                     )}
                   </div>
@@ -180,9 +185,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                       <option>Outro</option>
                       <option>Prefiro não informar</option>
                     </select>
-                    {errors.gender && (
+                    {errors.gender?.message && (
                       <p className="text-sm text-red-500 mt-1">
-                        {errors.gender.message}
+                        {errors.gender?.message as string}
                       </p>
                     )}
                   </div>
@@ -198,18 +203,18 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                     type="email"
                     {...register("personalEmail")}
                   />
-                  {errors.personalEmail && (
+                  {errors.personalEmail?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.personalEmail.message}
+                      {errors.personalEmail?.message as string}
                     </p>
                   )}
                 </div>
                 <div className="md:col-span-2">
                   <Label htmlFor="phone">Telefone Celular</Label>
                   <Input id="phone" {...register("phone")} />
-                  {errors.phone && (
+                  {errors.phone?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.phone.message}
+                      {errors.phone?.message as string}
                     </p>
                   )}
                 </div>
@@ -219,27 +224,27 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                   {isCepLoading && (
                     <p className="text-xs text-blue-500 mt-1">Buscando...</p>
                   )}
-                  {errors.cep && (
+                  {errors.cep?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.cep.message}
+                      {errors.cep?.message as string}
                     </p>
                   )}
                 </div>
                 <div className="md:col-span-3">
                   <Label htmlFor="street">Rua</Label>
                   <Input id="street" {...register("street")} />
-                  {errors.street && (
+                  {errors.street?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.street.message}
+                      {errors.street?.message as string}
                     </p>
                   )}
                 </div>
                 <div className="md:col-span-1">
                   <Label htmlFor="number">Número</Label>
                   <Input id="number" {...register("number")} />
-                  {errors.number && (
+                  {errors.number?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.number.message}
+                      {errors.number?.message as string}
                     </p>
                   )}
                 </div>
@@ -250,27 +255,27 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                 <div className="md:col-span-2">
                   <Label htmlFor="neighborhood">Bairro</Label>
                   <Input id="neighborhood" {...register("neighborhood")} />
-                  {errors.neighborhood && (
+                  {errors.neighborhood?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.neighborhood.message}
+                      {errors.neighborhood?.message as string}
                     </p>
                   )}
                 </div>
                 <div className="md:col-span-2">
                   <Label htmlFor="city">Cidade</Label>
                   <Input id="city" {...register("city")} />
-                  {errors.city && (
+                  {errors.city?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.city.message}
+                      {errors.city?.message as string}
                     </p>
                   )}
                 </div>
                 <div className="md:col-span-2">
                   <Label htmlFor="state">Estado</Label>
                   <Input id="state" {...register("state")} />
-                  {errors.state && (
+                  {errors.state?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.state.message}
+                      {errors.state?.message as string}
                     </p>
                   )}
                 </div>
@@ -285,9 +290,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                     type="date"
                     {...register("admissionDate")}
                   />
-                  {errors.admissionDate && (
+                  {errors.admissionDate?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.admissionDate.message}
+                      {errors.admissionDate?.message as string}
                     </p>
                   )}
                 </div>
@@ -306,9 +311,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                     <option>Médico(a)</option>
                     <option>Dentista</option>
                   </select>
-                  {errors.role && (
+                  {errors.role?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.role.message}
+                      {errors.role?.message as string}
                     </p>
                   )}
                 </div>
@@ -329,9 +334,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                         <option>COREN</option>
                         <option>CRF</option>
                       </select>
-                      {errors.professionalCouncil && (
+                      {errors.professionalCouncil?.message && (
                         <p className="text-sm text-red-500 mt-1">
-                          {errors.professionalCouncil.message}
+                          {errors.professionalCouncil?.message as string}
                         </p>
                       )}
                     </div>
@@ -341,9 +346,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                         id="councilNumber"
                         {...register("councilNumber")}
                       />
-                      {errors.councilNumber && (
+                      {errors.councilNumber?.message && (
                         <p className="text-sm text-red-500 mt-1">
-                          {errors.councilNumber.message}
+                          {errors.councilNumber?.message as string}
                         </p>
                       )}
                     </div>
@@ -383,9 +388,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                         <option>SE</option>
                         <option>TO</option>
                       </select>
-                      {errors.councilState && (
+                      {errors.councilState?.message && (
                         <p className="text-sm text-red-500 mt-1">
-                          {errors.councilState.message}
+                          {errors.councilState?.message as string}
                         </p>
                       )}
                     </div>
@@ -402,9 +407,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                     type="email"
                     {...register("accessEmail")}
                   />
-                  {errors.accessEmail && (
+                  {errors.accessEmail?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.accessEmail.message}
+                      {errors.accessEmail?.message as string}
                     </p>
                   )}
                 </div>
@@ -421,9 +426,9 @@ export function FuncionarioModal({ open, onClose, onSave }) {
                     <option>Admin</option>
                     <option>Profissional da Saúde</option>
                   </select>
-                  {errors.accessProfile && (
+                  {errors.accessProfile?.message && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.accessProfile.message}
+                      {errors.accessProfile?.message as string}
                     </p>
                   )}
                 </div>

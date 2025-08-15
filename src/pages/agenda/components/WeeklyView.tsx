@@ -1,5 +1,5 @@
 // Caminho: src/pages/agenda/components/WeeklyView.tsx
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

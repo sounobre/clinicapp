@@ -1,5 +1,4 @@
 // Caminho: src/components/layout/Sidebar.tsx
-import React from 'react';
 import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { navItems } from '@/config/accessControl';

@@ -1,5 +1,5 @@
 // Caminho: src/pages/AgendaPage.tsx
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Plus, X, Users, Calendar, Clock, StickyNote } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
