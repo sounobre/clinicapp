@@ -139,7 +139,7 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
         onClose={closeModal}
         onSave={handleSaveSession}
         userRole={currentUser.role}
-        clients={[client]} // Passa apenas o cliente atual para o modal
+        clients={client ? [client] : []} // Passa apenas o cliente atual para o modal
         editingData={editingItem}
       />
     </main>

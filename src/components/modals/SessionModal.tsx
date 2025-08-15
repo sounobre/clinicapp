@@ -23,7 +23,7 @@ interface SessionModalProps {
   onClose: () => void;
   onSave: (data: SessionFormData) => void;
   userRole: Role;
-  clients: Client[];
+  clients?: Client[];
   editingData?: Session | null; // Dados da sessão que está sendo editada
   onDateClickData?: { date: Date; time: string } | null; // Dados para pré-preencher
 }
@@ -33,7 +33,7 @@ export function SessionModal({
   onClose,
   onSave,
   userRole,
-  clients,
+  clients = [],
   editingData,
   onDateClickData,
 }: SessionModalProps) {
