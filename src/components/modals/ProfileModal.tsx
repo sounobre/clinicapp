@@ -85,7 +85,7 @@ export function ProfileModal({ open, onClose }: ProfileModalProps) {
                 {errors.confirmPassword && <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>}
               </div>
               <div className="flex justify-end pt-4">
-                <Button type="submit">Salvar Alterações</Button>
+                <Button variant="primary" type="submit">Salvar Alterações</Button>
               </div>
             </form>
           </TabsContent>

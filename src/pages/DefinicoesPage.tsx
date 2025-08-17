@@ -119,7 +119,7 @@ export function DefinicoesPage({ currentUser, setCurrentUser }: DefinicoesPagePr
                 </div>
               </CardContent>
               <div className="flex justify-end p-6 pt-2">
-                <Button type="submit">Salvar Clínica</Button>
+                <Button variant="primary" type="submit">Salvar Clínica</Button>
               </div>
             </form>
           </Card>
@@ -170,7 +170,7 @@ export function DefinicoesPage({ currentUser, setCurrentUser }: DefinicoesPagePr
               </div>
             </CardContent>
             <div className="flex justify-end p-6 pt-2">
-              <Button type="submit">Salvar Perfil</Button>
+              <Button variant="primary" type="submit">Salvar Perfil</Button>
             </div>
           </form>
         </Card>
