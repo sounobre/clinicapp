@@ -83,8 +83,9 @@ export const getPatients = async (
       search: searchTerm,
     },
   });
+  console.log(response.data.content)
 
-  const respData = response.data;
+  const respData = response.data.content;
 
   // Se a API retorna um array simples de pacientes
   if (Array.isArray(respData)) {
