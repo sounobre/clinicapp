@@ -68,7 +68,7 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
     return sessions
       .map(s => ({
         ...s,
-        date: new Date(`${s.data_sessao.replace(/-/g, '\/')}T${s.hora_inicio}`),
+        date: new Date(`${s.dataSessao.replace(/-/g, '\/')}T${s.horaInicio}`),
       }))
       .sort((a, b) => b.date.getTime() - a.date.getTime());
   }, [sessions]);
@@ -104,8 +104,8 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-base">{item.titulo_sessao || "Sessão"}</CardTitle>
-                      <CardDescription>{item.date.toLocaleDateString('pt-BR')} - {item.hora_inicio}</CardDescription>
+                      <CardTitle className="text-base">{item.tituloSessao || "Sessão"}</CardTitle>
+                      <CardDescription>{item.date.toLocaleDateString('pt-BR')} - {item.horaInicio}</CardDescription>
                     </div>
                     <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={() => openModalForEdit(item)}>
                       <Edit className="h-4 w-4" />
@@ -113,17 +113,17 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {item.notas_agendamento && (
+                  {item.notasAgendamento && (
                     <div>
                       <Label className="text-xs text-slate-400 font-semibold">NOTAS DO AGENDAMENTO</Label>
-                      <p className="text-sm text-slate-600 dark:text-slate-300 pt-1">{item.notas_agendamento}</p>
+                      <p className="text-sm text-slate-600 dark:text-slate-300 pt-1">{item.notasAgendamento}</p>
                     </div>
                   )}
-                  {item.notas_internas && (
+                  {item.notasInternas && (
                     <div>
                       <Label className="text-xs text-slate-400 font-semibold">EVOLUÇÃO DA SESSÃO</Label>
                       <p className="text-sm text-slate-600 dark:text-slate-400 pt-1 italic border-l-2 border-slate-300 dark:border-slate-600 pl-3">
-                        {item.notas_internas.substring(0, 150)}{item.notas_internas.length > 150 ? '...' : ''}
+                        {item.notasInternas.substring(0, 150)}{item.notasInternas.length > 150 ? '...' : ''}
                       </p>
                     </div>
                   )}

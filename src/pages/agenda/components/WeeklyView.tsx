@@ -42,16 +42,16 @@ export function WeeklyView({ calendar, sessions, onDateClick, onAppointmentClick
                 </p>
               </div>
               <div className="mt-2 space-y-1">
-                {sessions.filter(apt => isSameDay(new Date(apt.data_sessao.replace(/-/g, '\/')), day))
-                  .sort((a, b) => a.hora_inicio.localeCompare(b.hora_inicio))
+                {sessions.filter(apt => isSameDay(new Date(apt.dataSessao.replace(/-/g, '\/')), day))
+                  .sort((a, b) => a.horaInicio.localeCompare(b.horaInicio))
                   .map(apt => (
                     <div 
                         key={apt.id} 
                         onClick={(e) => { e.stopPropagation(); onAppointmentClick(apt); }} 
                         className={cn("p-1 rounded-md text-xs text-left text-white cursor-pointer bg-blue-500 hover:bg-blue-600")}
                     >
-                      <p className="font-semibold">{apt.titulo_sessao}</p>
-                      <p>{apt.hora_inicio}</p>
+                      <p className="font-semibold">{apt.tituloSessao}</p>
+                      <p>{apt.horaInicio}</p>
                     </div>
                 ))}
               </div>

@@ -28,16 +28,20 @@ export interface Client {
 export interface Session {
   id: number;
   pacienteId: number;
-  data_sessao: string;
-  hora_inicio: string;
-  duracao_minutos: number;
-  titulo_sessao: string;
-  notas_agendamento?: string;
-  notas_internas?: string;
-  tipo_sessao: 'Presencial' | 'Online';
-  status_sessao: 'Confirmada' | 'Pendente' | 'Realizada' | 'Cancelada' | 'Faltou';
-  valor_sessao: number;
+  dataSessao: string;
+  horaInicio: string;
+  duracaoMinutos: number;
+  tituloSessao: string;
+  notasAgendamento?: string;
+  notasInternas?: string;
+  tipoSessao: 'Presencial' | 'Online';
+  statusSessao: 'Confirmada' | 'Pendente' | 'Realizada' | 'Cancelada' | 'Faltou';
+  valorSessao: number;
+  statusPagamento?: 'Pendente' | 'Pago' | 'Vencido' | 'Isento';
+  dataRecebimento?: string;
+  formaRecebimento?: 'Pix' | 'Dinheiro' | 'Transferência' | 'Cartão de Crédito';
   recorrencia: 'Nao se repete' | 'Semanalmente' | 'Quinzenalmente' | 'Mensalmente';
+  recorrenciaDataFim?: string;
   // Adicione outros campos conforme necessário
   [key: string]: any;
 }

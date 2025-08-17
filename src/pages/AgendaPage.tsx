@@ -149,7 +149,7 @@ export function AgendaPage({ currentUser }: AgendaPageProps) {
         {selectedSession && (
           <>
             <CardHeader>
-              <CardTitle>{selectedSession.titulo_sessao}</CardTitle>
+              <CardTitle>{selectedSession.tituloSessao}</CardTitle>
               <Button variant="ghost" size="icon" onClick={() => setIsDetailModalOpen(false)} className="absolute top-3 right-3 h-8 w-8 rounded-full"><X className="h-5 w-5" /></Button>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -159,16 +159,16 @@ export function AgendaPage({ currentUser }: AgendaPageProps) {
               </div>
               <div className="flex items-center text-slate-600 dark:text-slate-400">
                 <Calendar className="h-5 w-5 mr-3 text-slate-400"/>
-                <span>{new Date(selectedSession.data_sessao.replace(/-/g, '\/')).toLocaleDateString('pt-BR', { timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                <span>{new Date(selectedSession.dataSessao.replace(/-/g, '\/')).toLocaleDateString('pt-BR', { timeZone: 'UTC', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
               </div>
               <div className="flex items-center text-slate-600 dark:text-slate-400">
                 <Clock className="h-5 w-5 mr-3 text-slate-400"/>
-                <span>{selectedSession.hora_inicio}</span>
+                <span>{selectedSession.horaInicio}</span>
               </div>
-              {selectedSession.notas_agendamento && (
+              {selectedSession.notasAgendamento && (
                 <div className="flex items-start text-slate-600 dark:text-slate-400">
                   <StickyNote className="h-5 w-5 mr-3 mt-1 text-slate-400 flex-shrink-0"/>
-                  <p className="flex-1">{selectedSession.notas_agendamento}</p>
+                  <p className="flex-1">{selectedSession.notasAgendamento}</p>
                 </div>
               )}
             </CardContent>

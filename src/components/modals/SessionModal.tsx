@@ -1,5 +1,5 @@
 // Caminho: src/components/modals/SessionModal.tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,6 +13,7 @@ import { CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { sessionSchema } from "@/schemas";
 import type { Session, Client, Role } from "@/types";
+import { cn } from "@/lib/utils";
 
 // O tipo de dado do formulário inferido a partir do schema
 type SessionFormData = z.infer<typeof sessionSchema>;
@@ -49,17 +50,61 @@ export function SessionModal({
     resolver: zodResolver(sessionSchema),
     defaultValues: {
       recorrencia: "Nao se repete",
-      duracao_minutos: 50,
-      tipo_sessao: "Online",
-      status_sessao: "Pendente",
-      valor_sessao: 0,
-      status_pagamento: "Pendente",
-      forma_recebimento: "Pix",
+      duracaoMinutos: 50,
+      tipoSessao: "Online",
+      statusSessao: "Pendente",
+      valorSessao: 0,
+      statusPagamento: "Pendente",
+      formaRecebimento: "Pix",
     },
   });
 
   // Observa o campo 'recorrencia' para mostrar/ocultar o campo de data final
   const recorrencia = watch("recorrencia");
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState(-1);
+
+  const filteredClients = clients.filter((c) =>
+    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setValue("pacienteId", "");
+    setIsOpen(true);
+    setHighlightIndex(0);
+  };
+
+  const handleSelect = (client: Client) => {
+    setSearchTerm(client.name);
+    setValue("pacienteId", client.id.toString());
+    setIsOpen(false);
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (!isOpen || filteredClients.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightIndex((prev) => (prev + 1) % filteredClients.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightIndex(
+        (prev) => (prev - 1 + filteredClients.length) % filteredClients.length
+      );
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (highlightIndex >= 0) {
+        handleSelect(filteredClients[highlightIndex]);
+      }
+    }
+  };
 
   // Efeito para popular o formulário quando o modal abre
   useEffect(() => {
@@ -67,34 +112,40 @@ export function SessionModal({
       if (editingData) {
         const data = editingData;
         setValue("pacienteId", data.pacienteId?.toString() || "");
-        setValue("titulo_sessao", data.titulo_sessao);
-        setValue("data_sessao", data.data_sessao);
-        setValue("hora_inicio", data.hora_inicio);
-        setValue("duracao_minutos", data.duracao_minutos);
-        setValue("tipo_sessao", data.tipo_sessao);
-        setValue("status_sessao", data.status_sessao);
-        setValue("valor_sessao", data.valor_sessao);
-        setValue("status_pagamento", data.status_pagamento || "Pendente");
-        setValue("data_recebimento", data.data_recebimento || "");
-        setValue("forma_recebimento", data.forma_recebimento || "Pix");
+        setValue("tituloSessao", data.tituloSessao);
+        setValue("dataSessao", data.dataSessao);
+        setValue("horaInicio", data.horaInicio);
+        setValue("duracaoMinutos", data.duracaoMinutos);
+        setValue("tipoSessao", data.tipoSessao);
+        setValue("statusSessao", data.statusSessao);
+        setValue("valorSessao", data.valorSessao);
+        setValue("statusPagamento", data.statusPagamento || "Pendente");
+        setValue("dataRecebimento", data.dataRecebimento || "");
+        setValue("formaRecebimento", data.formaRecebimento || "Pix");
         setValue("recorrencia", data.recorrencia);
-        setValue("recorrencia_data_fim", data.recorrencia_data_fim || "");
-        setValue("notas_agendamento", data.notas_agendamento || "");
-        setValue("notas_internas", data.notas_internas || "");
+        setValue("recorrenciaDataFim", data.recorrenciaDataFim || "");
+        setValue("notasAgendamento", data.notasAgendamento || "");
+        setValue("notasInternas", data.notasInternas || "");
+        const selectedClient = clients.find(
+          (c) => c.id === data.pacienteId
+        );
+        setSearchTerm(selectedClient ? selectedClient.name : "");
       } else if (onDateClickData) {
         // Modo de criação a partir de um clique no calendário
         reset(); // Limpa o form antes de setar novos valores
         setValue(
-          "data_sessao",
+          "dataSessao",
           onDateClickData.date.toISOString().split("T")[0]
         );
-        setValue("hora_inicio", onDateClickData.time);
+        setValue("horaInicio", onDateClickData.time);
+        setSearchTerm("");
       } else {
         // Modo de criação a partir do botão "Novo Agendamento"
         reset();
+        setSearchTerm("");
       }
     }
-  }, [editingData, onDateClickData, open, reset, setValue]);
+  }, [clients, editingData, onDateClickData, open, reset, setValue]);
 
   const onSubmit = (data: SessionFormData) => {
     onSave(data);
@@ -103,6 +154,8 @@ export function SessionModal({
 
   const internalClose = () => {
     reset(); // Limpa os campos do formulário
+    setSearchTerm("");
+    setIsOpen(false);
     onClose(); // Fecha o modal
   };
 
@@ -133,21 +186,36 @@ export function SessionModal({
             {/* --- Aba de Detalhes da Sessão --- */}
             <TabsContent value="details">
               <div className="p-6 space-y-4 min-h-[450px]">
-                <div>
+                <div className="relative">
                   <Label htmlFor="pacienteId">Paciente</Label>
-                  <select
+                  <Input
                     id="pacienteId"
-                    {...register("pacienteId")}
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    onFocus={() => setIsOpen(true)}
+                    onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+                    placeholder="Selecione um paciente"
                     disabled={!!editingData}
-                    className="w-full h-10 rounded-md border border-slate-300 bg-transparent dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    <option value="">Selecione um paciente</option>
-                    {clients.map((client) => (
-                      <option key={client.id} value={client.id}>
-                        {client.name}
-                      </option>
-                    ))}
-                  </select>
+                    autoComplete="off"
+                  />
+                  <input type="hidden" {...register("pacienteId")} />
+                  {isOpen && filteredClients.length > 0 && (
+                    <ul className="absolute z-10 w-full border border-slate-300 dark:border-slate-700 mt-1 rounded-md max-h-40 overflow-y-auto bg-white dark:bg-slate-950">
+                      {filteredClients.map((client, idx) => (
+                        <li
+                          key={client.id}
+                          onMouseDown={() => handleSelect(client)}
+                          className={cn(
+                            "px-3 py-2 cursor-pointer",
+                            idx === highlightIndex && "bg-blue-500 text-white"
+                          )}
+                        >
+                          {client.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   {errors.pacienteId && (
                     <p className="text-sm text-red-500 mt-1">
                       {errors.pacienteId.message}
@@ -155,48 +223,48 @@ export function SessionModal({
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="titulo_sessao">Título</Label>
-                  <Input id="titulo_sessao" {...register("titulo_sessao")} />
-                  {errors.titulo_sessao && (
+                  <Label htmlFor="tituloSessao">Título</Label>
+                  <Input id="tituloSessao" {...register("tituloSessao")} />
+                  {errors.tituloSessao && (
                     <p className="text-sm text-red-500 mt-1">
-                      {errors.titulo_sessao.message}
+                      {errors.tituloSessao.message}
                     </p>
                   )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="data_sessao">Data</Label>
+                    <Label htmlFor="dataSessao">Data</Label>
                     <Input
-                      id="data_sessao"
+                      id="dataSessao"
                       type="date"
-                      {...register("data_sessao")}
+                      {...register("dataSessao")}
                     />
-                    {errors.data_sessao && (
+                    {errors.dataSessao && (
                       <p className="text-sm text-red-500 mt-1">
-                        {errors.data_sessao.message}
+                        {errors.dataSessao.message}
                       </p>
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="hora_inicio">Hora</Label>
+                    <Label htmlFor="horaInicio">Hora</Label>
                     <Input
-                      id="hora_inicio"
+                      id="horaInicio"
                       type="time"
-                      {...register("hora_inicio")}
+                      {...register("horaInicio")}
                     />
-                    {errors.hora_inicio && (
+                    {errors.horaInicio && (
                       <p className="text-sm text-red-500 mt-1">
-                        {errors.hora_inicio.message}
+                        {errors.horaInicio.message}
                       </p>
                     )}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="tipo_sessao">Tipo</Label>
+                    <Label htmlFor="tipoSessao">Tipo</Label>
                     <select
-                      id="tipo_sessao"
-                      {...register("tipo_sessao")}
+                      id="tipoSessao"
+                      {...register("tipoSessao")}
                       className="w-full h-10 rounded-md border border-slate-300 bg-transparent dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 px-3"
                     >
                       <option>Online</option>
@@ -204,10 +272,10 @@ export function SessionModal({
                     </select>
                   </div>
                   <div>
-                    <Label htmlFor="status_sessao">Status</Label>
+                    <Label htmlFor="statusSessao">Status</Label>
                     <select
-                      id="status_sessao"
-                      {...register("status_sessao")}
+                      id="statusSessao"
+                      {...register("statusSessao")}
                       className="w-full h-10 rounded-md border border-slate-300 bg-transparent dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 px-3"
                     >
                       <option>Pendente</option>
@@ -234,27 +302,27 @@ export function SessionModal({
                   </div>
                   {recorrencia !== "Nao se repete" && (
                     <div>
-                      <Label htmlFor="recorrencia_data_fim">Repetir até</Label>
+                      <Label htmlFor="recorrenciaDataFim">Repetir até</Label>
                       <Input
-                        id="recorrencia_data_fim"
+                        id="recorrenciaDataFim"
                         type="date"
-                        {...register("recorrencia_data_fim")}
+                        {...register("recorrenciaDataFim")}
                       />
-                      {errors.recorrencia_data_fim && (
+                      {errors.recorrenciaDataFim && (
                         <p className="text-sm text-red-500 mt-1">
-                          {errors.recorrencia_data_fim.message}
+                          {errors.recorrenciaDataFim.message}
                         </p>
                       )}
                     </div>
                   )}
                 </div>
                 <div>
-                  <Label htmlFor="notas_agendamento">
+                  <Label htmlFor="notasAgendamento">
                     Notas do Agendamento
                   </Label>
                   <textarea
-                    id="notas_agendamento"
-                    {...register("notas_agendamento")}
+                    id="notasAgendamento"
+                    {...register("notasAgendamento")}
                     className="min-h-[100px] w-full p-2 bg-transparent focus:outline-none rounded-md border border-slate-300 dark:border-slate-700 mt-1"
                   />
                 </div>
@@ -266,26 +334,26 @@ export function SessionModal({
               <div className="p-6 space-y-4 min-h-[450px]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="valor_sessao">Valor (R$)</Label>
+                    <Label htmlFor="valorSessao">Valor (R$)</Label>
                     <Input
-                      id="valor_sessao"
+                      id="valorSessao"
                       type="number"
                       step="0.01"
-                      {...register("valor_sessao")}
+                      {...register("valorSessao")}
                     />
-                    {errors.valor_sessao && (
+                    {errors.valorSessao && (
                       <p className="text-sm text-red-500 mt-1">
-                        {errors.valor_sessao.message}
+                        {errors.valorSessao.message}
                       </p>
                     )}
                   </div>
                   <div>
-                    <Label htmlFor="status_pagamento">
+                    <Label htmlFor="statusPagamento">
                       Status do Pagamento
                     </Label>
                     <select
-                      id="status_pagamento"
-                      {...register("status_pagamento")}
+                      id="statusPagamento"
+                      {...register("statusPagamento")}
                       className="w-full h-10 rounded-md border border-slate-300 bg-transparent dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 px-3"
                     >
                       <option>Pendente</option>
@@ -297,18 +365,18 @@ export function SessionModal({
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="data_recebimento">Data Recebimento</Label>
+                    <Label htmlFor="dataRecebimento">Data Recebimento</Label>
                     <Input
-                      id="data_recebimento"
+                      id="dataRecebimento"
                       type="date"
-                      {...register("data_recebimento")}
+                      {...register("dataRecebimento")}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="forma_recebimento">Forma Recebimento</Label>
+                    <Label htmlFor="formaRecebimento">Forma Recebimento</Label>
                     <select
-                      id="forma_recebimento"
-                      {...register("forma_recebimento")}
+                      id="formaRecebimento"
+                      {...register("formaRecebimento")}
                       className="w-full h-10 rounded-md border border-slate-300 bg-transparent dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 px-3"
                     >
                       <option>Pix</option>
@@ -334,7 +402,7 @@ export function SessionModal({
               <TabsContent value="evolution">
                 <div className="p-6 space-y-4 min-h-[450px]">
                   <div>
-                    <Label htmlFor="notas_internas">
+                    <Label htmlFor="notasInternas">
                       Evolução da Sessão (Notas Internas)
                     </Label>
                     <div className="rounded-md border border-slate-300 dark:border-slate-700 mt-1">
@@ -365,8 +433,8 @@ export function SessionModal({
                         </Button>
                       </div>
                       <textarea
-                        id="notas_internas"
-                        {...register("notas_internas")}
+                        id="notasInternas"
+                        {...register("notasInternas")}
                         className="min-h-[200px] w-full p-2 bg-transparent focus:outline-none"
                       />
                     </div>

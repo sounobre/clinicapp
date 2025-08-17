@@ -15,7 +15,7 @@ export function DailyView({ calendar, sessions, onAppointmentClick, onTimeSlotCl
   // Define as horas que serão exibidas na linha do tempo (8h às 20h)
   const hours = Array.from({ length: 13 }, (_, i) => i + 8);
 
-  const sessionsForDay = sessions.filter(apt => calendar.isSameDay(new Date(apt.data_sessao.replace(/-/g, '\/')), currentDate));
+  const sessionsForDay = sessions.filter(apt => calendar.isSameDay(new Date(apt.dataSessao.replace(/-/g, '\/')), currentDate));
 
   return (
     <Card>
@@ -43,11 +43,11 @@ export function DailyView({ calendar, sessions, onAppointmentClick, onTimeSlotCl
           {/* Agendamentos posicionados sobre a linha do tempo */}
           <div className="absolute top-0 left-20 right-6 bottom-0">
             {sessionsForDay.map(apt => {
-              const startHour = parseInt(apt.hora_inicio.split(':')[0]);
-              const startMinutes = parseInt(apt.hora_inicio.split(':')[1]);
+              const startHour = parseInt(apt.horaInicio.split(':')[0]);
+              const startMinutes = parseInt(apt.horaInicio.split(':')[1]);
               
               const top = ((startHour - 8) * HOUR_HEIGHT_PX) + (startMinutes / 60 * HOUR_HEIGHT_PX);
-              const height = (apt.duracao_minutos / 60) * HOUR_HEIGHT_PX;
+              const height = (apt.duracaoMinutos / 60) * HOUR_HEIGHT_PX;
 
               return (
                 <div
@@ -56,8 +56,8 @@ export function DailyView({ calendar, sessions, onAppointmentClick, onTimeSlotCl
                   className={cn("absolute w-full p-2 rounded-lg text-white text-sm cursor-pointer transition-all duration-200 ease-in-out bg-blue-500 hover:bg-blue-600 z-10")}
                   style={{ top: `${top}px`, height: `${height}px`, left: '1rem', right: '1rem' }}
                 >
-                  <p className="font-bold">{apt.titulo_sessao}</p>
-                  <p className="text-xs opacity-80">{`${apt.hora_inicio}`}</p>
+                  <p className="font-bold">{apt.tituloSessao}</p>
+                  <p className="text-xs opacity-80">{`${apt.horaInicio}`}</p>
                 </div>
               );
             })}

@@ -3,29 +3,29 @@ import { z } from 'zod';
 
 export const sessionSchema = z.object({
   pacienteId: z.string().min(1, "O paciente é obrigatório."),
-  titulo_sessao: z.string().min(3, "O título é obrigatório."),
-  data_sessao: z.string().refine(val => !isNaN(Date.parse(val)), "Data inválida."),
-  hora_inicio: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:MM)."),
-  duracao_minutos: z.coerce.number().positive("Duração deve ser positiva.").default(50),
-  tipo_sessao: z.enum(['Presencial', 'Online']),
-  status_sessao: z.enum(['Confirmada', 'Pendente', 'Realizada', 'Cancelada', 'Faltou']),
-  valor_sessao: z.coerce.number().nonnegative("O valor não pode ser negativo."),
-  status_pagamento: z.enum(['Pendente', 'Pago', 'Vencido', 'Isento']).optional(),
-  data_recebimento: z.string().optional(),
-  forma_recebimento: z.enum(['Pix', 'Dinheiro', 'Transferência', 'Cartão de Crédito']).optional(),
+  tituloSessao: z.string().min(3, "O título é obrigatório."),
+  dataSessao: z.string().refine(val => !isNaN(Date.parse(val)), "Data inválida."),
+  horaInicio: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, "Formato de hora inválido (HH:MM)."),
+  duracaoMinutos: z.coerce.number().positive("Duração deve ser positiva.").default(50),
+  tipoSessao: z.enum(['Presencial', 'Online']),
+  statusSessao: z.enum(['Confirmada', 'Pendente', 'Realizada', 'Cancelada', 'Faltou']),
+  valorSessao: z.coerce.number().nonnegative("O valor não pode ser negativo."),
+  statusPagamento: z.enum(['Pendente', 'Pago', 'Vencido', 'Isento']).optional(),
+  dataRecebimento: z.string().optional(),
+  formaRecebimento: z.enum(['Pix', 'Dinheiro', 'Transferência', 'Cartão de Crédito']).optional(),
   recorrencia: z.enum(['Nao se repete', 'Semanalmente', 'Quinzenalmente', 'Mensalmente']),
-  recorrencia_data_fim: z.string().optional(),
-  notas_agendamento: z.string().optional(),
-  notas_internas: z.string().optional(),
+  recorrenciaDataFim: z.string().optional(),
+  notasAgendamento: z.string().optional(),
+  notasInternas: z.string().optional(),
   anexos: z.any().optional(),
 }).refine(data => {
-    if (data.recorrencia !== 'Nao se repete' && !data.recorrencia_data_fim) {
+    if (data.recorrencia !== 'Nao se repete' && !data.recorrenciaDataFim) {
         return false;
     }
     return true;
 }, {
     message: "A data de término é obrigatória para sessões recorrentes.",
-    path: ["recorrencia_data_fim"],
+    path: ["recorrenciaDataFim"],
 });
 
 export const clientSchema = z.object({
