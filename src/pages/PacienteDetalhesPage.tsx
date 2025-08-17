@@ -96,7 +96,7 @@ export function PacienteDetalhesPage({ clientId, onBack, currentUser }: Paciente
         <div className="lg:col-span-2">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">Histórico de Sessões</h3>
-            <Button onClick={openModalForNew}><Plus className="mr-2 h-4 w-4" /> Registrar Nova Sessão</Button>
+            <Button variant="primary" onClick={openModalForNew}><Plus className="mr-2 h-4 w-4" /> Registrar Nova Sessão</Button>
           </div>
             <div className="space-y-4">
               {historyItems.map((item: any) => (

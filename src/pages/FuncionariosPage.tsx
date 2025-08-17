@@ -30,7 +30,7 @@ export function FuncionariosPage({ employees, setEmployees }: FuncionariosPagePr
         <main className="p-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Funcionários</h2>
-                <Button onClick={() => setIsModalOpen(true)}><Plus className="mr-2 h-4 w-4" /> Novo Funcionário</Button>
+                <Button variant="primary" onClick={() => setIsModalOpen(true)}><Plus className="mr-2 h-4 w-4" /> Novo Funcionário</Button>
             </div>
             <Card>
                 <CardContent className="!p-0">

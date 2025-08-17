@@ -474,7 +474,7 @@ export function SessionModal({
           <Button variant="ghost" type="button" onClick={internalClose}>
             Cancelar
           </Button>
-          <Button type="submit">Salvar</Button>
+          <Button variant="primary" type="submit">Salvar</Button>
         </div>
       </form>
     </Dialog>

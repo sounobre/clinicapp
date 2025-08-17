@@ -471,7 +471,7 @@ export function FuncionarioModal({ open, onClose, onSave }: FuncionarioModalProp
           <Button variant="ghost" type="button" onClick={onClose}>
             Cancelar
           </Button>
-          <Button type="submit" disabled={!isValid}>
+          <Button variant="primary" type="submit" disabled={!isValid}>
             Salvar Cadastro
           </Button>
         </div>
