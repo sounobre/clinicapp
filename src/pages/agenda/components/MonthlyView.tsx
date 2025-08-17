@@ -44,7 +44,7 @@ export function MonthlyView({ calendar, sessions, onDateClick }: CalendarViewPro
           {blankDays.map((_, i) => <div key={`blank-${i}`} className="border rounded-md border-transparent"></div>)}
           {days.map(date => {
             const dayDate = new Date(year, month, date);
-            const sessionsForDay = sessions.filter(apt => isSameDay(new Date(apt.data_sessao.replace(/-/g, '\/')), dayDate));
+            const sessionsForDay = sessions.filter(apt => isSameDay(new Date(apt.dataSessao.replace(/-/g, '\/')), dayDate));
             
             return (
               <div
