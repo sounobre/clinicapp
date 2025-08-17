@@ -1,5 +1,5 @@
 // Caminho: src/components/modals/SessionModal.tsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,6 +13,7 @@ import { CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { sessionSchema } from "@/schemas";
 import type { Session, Client, Role } from "@/types";
+import { cn } from "@/lib/utils";
 
 // O tipo de dado do formulário inferido a partir do schema
 type SessionFormData = z.infer<typeof sessionSchema>;
@@ -61,6 +62,50 @@ export function SessionModal({
   // Observa o campo 'recorrencia' para mostrar/ocultar o campo de data final
   const recorrencia = watch("recorrencia");
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState(-1);
+
+  const filteredClients = clients.filter((c) =>
+    c.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    setValue("pacienteId", "");
+    setIsOpen(true);
+    setHighlightIndex(0);
+  };
+
+  const handleSelect = (client: Client) => {
+    setSearchTerm(client.name);
+    setValue("pacienteId", client.id.toString());
+    setIsOpen(false);
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (!isOpen || filteredClients.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightIndex((prev) => (prev + 1) % filteredClients.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightIndex(
+        (prev) => (prev - 1 + filteredClients.length) % filteredClients.length
+      );
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (highlightIndex >= 0) {
+        handleSelect(filteredClients[highlightIndex]);
+      }
+    }
+  };
+
   // Efeito para popular o formulário quando o modal abre
   useEffect(() => {
     if (open) {
@@ -81,6 +126,10 @@ export function SessionModal({
         setValue("recorrencia_data_fim", data.recorrencia_data_fim || "");
         setValue("notas_agendamento", data.notas_agendamento || "");
         setValue("notas_internas", data.notas_internas || "");
+        const selectedClient = clients.find(
+          (c) => c.id === data.pacienteId
+        );
+        setSearchTerm(selectedClient ? selectedClient.name : "");
       } else if (onDateClickData) {
         // Modo de criação a partir de um clique no calendário
         reset(); // Limpa o form antes de setar novos valores
@@ -89,12 +138,14 @@ export function SessionModal({
           onDateClickData.date.toISOString().split("T")[0]
         );
         setValue("hora_inicio", onDateClickData.time);
+        setSearchTerm("");
       } else {
         // Modo de criação a partir do botão "Novo Agendamento"
         reset();
+        setSearchTerm("");
       }
     }
-  }, [editingData, onDateClickData, open, reset, setValue]);
+  }, [clients, editingData, onDateClickData, open, reset, setValue]);
 
   const onSubmit = (data: SessionFormData) => {
     onSave(data);
@@ -103,6 +154,8 @@ export function SessionModal({
 
   const internalClose = () => {
     reset(); // Limpa os campos do formulário
+    setSearchTerm("");
+    setIsOpen(false);
     onClose(); // Fecha o modal
   };
 
@@ -133,21 +186,36 @@ export function SessionModal({
             {/* --- Aba de Detalhes da Sessão --- */}
             <TabsContent value="details">
               <div className="p-6 space-y-4 min-h-[450px]">
-                <div>
+                <div className="relative">
                   <Label htmlFor="pacienteId">Paciente</Label>
-                  <select
+                  <Input
                     id="pacienteId"
-                    {...register("pacienteId")}
+                    value={searchTerm}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    onFocus={() => setIsOpen(true)}
+                    onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+                    placeholder="Selecione um paciente"
                     disabled={!!editingData}
-                    className="w-full h-10 rounded-md border border-slate-300 bg-transparent dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 px-3 disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    <option value="">Selecione um paciente</option>
-                    {clients.map((client) => (
-                      <option key={client.id} value={client.id}>
-                        {client.name}
-                      </option>
-                    ))}
-                  </select>
+                    autoComplete="off"
+                  />
+                  <input type="hidden" {...register("pacienteId")} />
+                  {isOpen && filteredClients.length > 0 && (
+                    <ul className="absolute z-10 w-full border border-slate-300 dark:border-slate-700 mt-1 rounded-md max-h-40 overflow-y-auto bg-white dark:bg-slate-950">
+                      {filteredClients.map((client, idx) => (
+                        <li
+                          key={client.id}
+                          onMouseDown={() => handleSelect(client)}
+                          className={cn(
+                            "px-3 py-2 cursor-pointer",
+                            idx === highlightIndex && "bg-blue-500 text-white"
+                          )}
+                        >
+                          {client.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   {errors.pacienteId && (
                     <p className="text-sm text-red-500 mt-1">
                       {errors.pacienteId.message}
