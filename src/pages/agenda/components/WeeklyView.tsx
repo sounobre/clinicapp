@@ -69,7 +69,10 @@ export function WeeklyView({ calendar, sessions, onDateClick, onAppointmentClick
             {/* Coluna de horários */}
             <div className="flex flex-col">
               {hours.map(hour => (
-                <div key={hour} className="h-16 text-sm text-slate-500 text-right pr-4 border-b border-slate-200 dark:border-slate-700 -translate-y-2">
+                <div
+                  key={hour}
+                  className="h-16 pb-px text-sm text-slate-500 text-right pr-4 -translate-y-2"
+                >
                   {`${hour}:00`}
                 </div>
               ))}
